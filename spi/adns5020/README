@@ -1,0 +1,45 @@
+-------------------------------------------------------------------------------
+ADNS5020
+-------------------------------------------------------------------------------
+
+This directory contains a capture of the communication between a Cypress
+cy7c63813 and an Avago ADNS 5020 Optical Mouse sensor.
+
+This is the internals of a fairly generic dell optical mouse.
+
+It is not nearly a complete sample of what types of traffic are possible,
+specifically, it doesn't include a capture of "Burst Mode" traffic, which the
+mouse firmware doesn't appear to use, even though Avago "highly recommends"
+that burst mode be used for all devices.
+
+adns5020-cy7c63813.sr
+-------------------------
+
+Logic analyzer setup
+--------------------
+
+The logic analyzer used was a generic logic8 clone, at 4Mhz.  (Avago documents
+max speed as 1Mhz)
+
+  Probe         Description
+  ---------------------------------
+  3	SDIO	Bidir, but we use the MOSI stack from SPI
+  4	SCLK	SPI clock.
+  5	CS	chip select, active low	
+
+  The part has pins for reset and LED control, but those were not used
+  in this particular device.
+
+Data
+----
+
+The sigrok command line used was:
+
+  sigrok-cli -d fx2lafw --config samplerate=4M --time 100ms \
+	-o adns5020-cy7c63813.sr
+
+The capture shows the controller continually (every 200us) checking the
+product code and mode, then reading for any movement in the X and Y
+directions.  This is... curious given what the datasheet for the part
+recommends, but I guess it's simple and it works.
+
