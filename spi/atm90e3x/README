@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Microchip/Atmel/IDT ATM90E3x
+-------------------------------------------------------------------------------
+
+This is an example capture communications with an ATM90E36.
+
+Captured at 10MHz, max SPI speed supported by device is 1200bps, and
+was configured for 1MHz in this example.
+
+Details:
+https://www.microchip.com/wwwproducts/en/atm90e36a
+
+
+Logic analyzer setup
+--------------------
+  Probe       Meter pin
+  -----------------------
+  0           CS
+  1           SCLK
+  2           COPI
+  3           CIPO
+
+
+Data
+----
+
+The sequence starts with reading the (undocumented) chip id register, 
+then issues a soft reset, then a sequence of reads of various
+configuration registers. Some configuration registers are re-written,
+then a set of calibration data is written.  Finally, a process starts
+reading some basic meter values every 500ms for a few iterations.
+
